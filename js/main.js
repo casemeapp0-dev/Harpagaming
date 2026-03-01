@@ -109,7 +109,7 @@ async function handleContactSubmit(e) {
         });
 
         if (response.ok) {
-            statusEl.textContent = 'Message sent successfully! We will be in touch soon.';
+            statusEl.textContent = 'Message sent successfully.';
             statusEl.className = 'form-status success';
             form.reset();
         } else {
