@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | HARPA GAMING</title>
+    <meta name="description"
+        content="Contact Harpa Gaming. Get in touch with our team for support, collaborations, or general inquiries.">
+    <link rel="stylesheet" href="./css/main.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body class="dark-theme">
+    <header class="navbar">
+        <div class="header-container">
+            <div class="header-left">
+                <a class="logo" href="./index.html">
+                    <span class="logo-text">HARPA GAMING</span>
+                </a>
+                <nav class="nav-links">
+                    <a href="./index.html">Home</a>
+                    <a href="./shop.html">Shop</a>
+                    <a href="./about.html">About</a>
+                    <a href="./contact.html" class="active">Contact</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn"><span class="material-icons">search</span></button>
+                <a class="btn-primary" href="./shop.html">
+                    Coming Soon
+                    <span class="material-icons">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="el-section page-header-section">
+            <div class="el-container">
+                <div class="text-center" style="text-align:center; padding: 100px 0 40px;">
+                    <span class="welcome-label">Get in Touch</span>
+                    <h1 class="welcome-title">JOIN THE <span style="color:var(--primary)">COLLECTIVE</span></h1>
+                    <p class="welcome-subtitle">Support, collaborations, or general inquiries. Our team is operating
+                        24/7 across all grid sectors.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="el-section" style="padding-top: 0;">
+            <div class="contact-grid">
+                <!-- Contact Info Column -->
+                <div class="contact-info-card tech-border corner-tl corner-tr">
+                    <h3 style="color: var(--primary); margin-bottom: 32px; font-size: 20px;">CONTACT_INFO</h3>
+                    <div class="contact-info-list">
+                        <div class="contact-info-item">
+                            <span class="material-icons" style="color: var(--primary); font-size: 18px;">email</span>
+                            <div>
+                                <div class="contact-info-label">CONTACT VIA EMAIL</div>
+                                <a href="mailto:cronereal@gmail.com">cronereal@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border-color);">
+                        <div class="contact-info-label" style="margin-bottom: 12px;">RESPONSE_TIME</div>
+                        <p style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">We
+                            typically respond within 24 hours during business days.</p>
+                    </div>
+                </div>
+
+                <!-- Contact Form Column -->
+                <div class="contact-form-card tech-border corner-tl corner-tr">
+                    <h3 style="color: var(--primary); margin-bottom: 32px; font-size: 20px;">SEND_TRANSMISSION</h3>
+
+                    <form id="contact-form" novalidate>
+                        <!-- Honeypot anti-spam field -->
+                        <div style="position: absolute; left: -9999px;" aria-hidden="true">
+                            <input type="text" name="website" tabindex="-1" autocomplete="off" id="hp-field">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-name" class="form-label">NAME *</label>
+                            <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name"
+                                required minlength="2">
+                            <div class="form-error" id="name-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-email" class="form-label">EMAIL *</label>
+                            <input type="email" id="contact-email" name="email" class="form-input"
+                                placeholder="your@email.com" required>
+                            <div class="form-error" id="email-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contact-message" class="form-label">MESSAGE *</label>
+                            <textarea id="contact-message" name="message" class="form-input form-textarea"
+                                placeholder="Your message..." required minlength="10" rows="6"></textarea>
+                            <div class="form-error" id="message-error"></div>
+                        </div>
+
+                        <button type="submit" class="form-submit" id="contact-submit">
+                            <span class="submit-text">SEND MESSAGE</span>
+                            <span class="submit-loading" style="display:none;">
+                                <span class="material-icons spinning">autorenew</span>
+                                SENDING...
+                            </span>
+                            <span class="material-icons submit-arrow">arrow_forward</span>
+                        </button>
+
+                        <div id="form-status" class="form-status"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div
+                        style="background: black; color: white; display: inline-block; padding: 4px 8px; font-size: 10px; font-weight: 700; margin-bottom: 24px;">
+                        HARPA</div>
+                    <ul>
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./about.html">About</a></li>
+                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="./privacy.html">Privacy Policy</a></li>
+                        <li><a href="./terms.html">Terms of Service</a></li>
+                        <li><a href="./cookies.html">Cookies Policy</a></li>
+                        <li><a href="./legal-notice.html">Legal Notice</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter / X</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <p style="font-size: 10px; color: rgba(0,0,0,0.6); margin-bottom: 16px;">cronereal@gmail.com</p>
+                    <ul>
+                        <li><a href="./faq.html">FAQ</a></li>
+                        <li><a href="./contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-massive">HARPA</div>
+
+            <div class="footer-bottom">
+                <div>&copy; HARPA. All rights reserved.</div>
+                <div>Website developed by <a href="https://siteflixpro.com" target="_blank" rel="noopener">Siteflix</a>
+                    (siteflixpro.com)</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
