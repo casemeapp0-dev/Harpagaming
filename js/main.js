@@ -100,20 +100,20 @@ async function handleContactSubmit(e) {
     submitLoading.style.display = 'inline-flex';
 
     try {
-        const response = await fetch('/api/contact', {
+        const formData = new FormData(form);
+
+        const response = await fetch('/', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, message })
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
         });
 
-        const data = await response.json();
-
-        if (data.success) {
-            statusEl.textContent = data.message || 'Message sent successfully!';
+        if (response.ok) {
+            statusEl.textContent = 'Message sent successfully! We will be in touch soon.';
             statusEl.className = 'form-status success';
             form.reset();
         } else {
-            statusEl.textContent = data.message || 'Failed to send message. Please try again.';
+            statusEl.textContent = 'Failed to send message. Please try again.';
             statusEl.className = 'form-status error';
         }
     } catch (error) {
