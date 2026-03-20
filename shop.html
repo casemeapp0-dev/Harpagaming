@@ -53,14 +53,18 @@
 
                 <div class="coming-soon-notify">
                     <p class="coming-soon-notify-label">Get notified when we launch</p>
-                    <form class="notify-form" onsubmit="return handleNotifySubmit(event)">
+                    <form class="notify-form" id="notify-form" onsubmit="return handleNotifySubmit(event)">
                         <div class="notify-input-group">
-                            <input type="email" class="notify-input" placeholder="Enter your email" required>
-                            <button type="submit" class="notify-btn">
+                            <input type="email" id="notify-email" class="notify-input" placeholder="Enter your email" required>
+                            <button type="submit" class="notify-btn" id="notify-btn">
                                 NOTIFY ME
                                 <span class="material-icons">arrow_forward</span>
                             </button>
                         </div>
+                        <label class="notify-consent">
+                            <input type="checkbox" id="notify-gdpr">
+                            <span>I agree to receive updates and marketing emails</span>
+                        </label>
                         <div id="notify-message" class="notify-message"></div>
                     </form>
                 </div>
@@ -88,7 +92,7 @@
                     <h4>Legal</h4>
                     <ul>
                         <li><a href="./privacy.html">Privacy Policy</a></li>
-                        <li><a href="./terms.html">Terms of Service</a></li>
+                        <li><a href="./terms.html">Terms of Use</a></li>
                         <li><a href="./cookies.html">Cookies Policy</a></li>
                         <li><a href="./legal-notice.html">Legal Notice</a></li>
                     </ul>
@@ -107,6 +111,7 @@
                     <ul>
                         <li><a href="./faq.html">FAQ</a></li>
                         <li><a href="./contact.html">Contact Us</a></li>
+                        <li><a href="#" data-cookie-settings>Cookie Settings</a></li>
                     </ul>
                 </div>
             </div>
@@ -115,13 +120,13 @@
 
             <div class="footer-bottom">
                 <div>&copy; HARPA. All rights reserved.</div>
-                <div>Website developed by <a href="https://siteflixpro.com" target="_blank" rel="noopener">Siteflix</a>
-                    (siteflixpro.com)</div>
+                <div>Built by <a href="https://siteflixpro.com" target="_blank" rel="noopener">Siteflix</a></div>
             </div>
         </div>
     </footer>
 
     <script src="./js/main.js"></script>
+    <script src="./js/cookie-consent.js"></script>
 </body>
 
 </html>

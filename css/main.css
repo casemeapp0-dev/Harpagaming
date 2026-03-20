@@ -162,6 +162,7 @@ a {
     position: relative;
     width: 100%;
     height: 100vh;
+    min-height: 320px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -175,10 +176,38 @@ a {
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
+    background: #000 url('../assets/robot-fallback.jpg') center/cover no-repeat;
 }
 
-.spline-background::before {
+/* ── Spline Container — wraps iframe, hides watermark ── */
+.spline-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.spline-container iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+    pointer-events: auto;
+    transform-origin: center center;
+    transform: scale(1.25);
+}
+
+/* Watermark cover — positioned over the Spline "Built with Spline" badge.
+   Because the iframe is cross-origin, we cannot target internal elements
+   with CSS selectors. This ::after overlay is the only reliable CSS method.
+   Position is calculated per breakpoint based on where scale() moves the
+   watermark: at scale S with center origin, the iframe bottom-right corner
+   lands at (50% + 50%*S) from top-left. */
+
+/* Desktop: scale(1.25) → watermark at 112.5% → clipped by overflow:hidden,
+   but we add a cover at the edge as a safety net */
+.spline-container::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -190,25 +219,52 @@ a {
     pointer-events: none;
 }
 
-.spline-background iframe {
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
-    pointer-events: auto;
+/* Tablet: scale(0.75) → watermark at ~87.5% from top/left
+   = ~12.5% from bottom-right */
+@media (max-width: 1023px) {
+    .spline-container iframe {
+        transform: scale(0.75);
+    }
+
+    .spline-container::after {
+        bottom: 10%;
+        right: 8%;
+        width: 200px;
+        height: 60px;
+        background: #000;
+        border-radius: 4px;
+    }
+}
+
+/* Mobile: scale(0.5) → watermark at ~75% from top/left
+   = ~25% from bottom-right */
+@media (max-width: 767px) {
+    .spline-container iframe {
+        transform: scale(0.5);
+    }
+
+    .spline-container::after {
+        bottom: 22%;
+        right: 18%;
+        width: 160px;
+        height: 50px;
+        background: #000;
+        border-radius: 4px;
+    }
 }
 
 .welcome-hero-section::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
-    z-index: 5;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.25) 100%);
+    z-index: 1;
     pointer-events: none;
 }
 
 .welcome-hero-section .el-container {
     position: relative;
-    z-index: 20;
+    z-index: 3;
     pointer-events: none;
     text-align: center;
 }
@@ -791,6 +847,44 @@ a {
     min-height: 16px;
 }
 
+.notify-message.error {
+    color: #ff4444;
+}
+
+.notify-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.notify-consent input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.notify-consent span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.notify-consent.error span {
+    color: #ff4444;
+}
+
+.notify-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .coming-soon-stats {
     display: flex;
     justify-content: center;
@@ -967,6 +1061,7 @@ a {
 .merch-announcement-badge {
     display: inline-flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
     font-family: var(--font-mono);
     font-size: 10px;
@@ -976,6 +1071,9 @@ a {
     border: 1px solid var(--border-color);
     padding: 8px 20px;
     margin-bottom: 40px;
+    overflow: visible;
+    white-space: normal;
+    max-width: 100%;
 }
 
 .merch-announcement-badge .material-icons {
@@ -1166,5 +1264,341 @@ a {
 
     .about-brand-card {
         padding: 36px 28px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   Cookie Consent Banner
+   ══════════════════════════════════════════════════ */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: var(--surface-dark);
+    border-top: 1px solid var(--border-color);
+    padding: 24px;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.cookie-banner-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.cookie-banner-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.cookie-banner-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+.cookie-banner-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.cookie-banner-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.cookie-banner-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.cookie-banner-desc a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.cookie-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* ─── Shared Button Styles ────────────────────────── */
+.cookie-btn {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.cookie-btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.cookie-btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.cookie-btn-primary {
+    background: var(--primary);
+    color: #000;
+    border: 1px solid var(--primary);
+}
+
+.cookie-btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.cookie-btn-link {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    padding: 8px 4px;
+    transition: color 0.25s;
+}
+
+.cookie-btn-link:hover {
+    color: var(--primary);
+}
+
+/* ─── Mobile Banner ───────────────────────────────── */
+@media (max-width: 900px) {
+    .cookie-banner-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .cookie-banner-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .cookie-btn {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .cookie-btn-link {
+        flex-basis: 100%;
+        text-align: center;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   Cookie Preferences Modal
+   ══════════════════════════════════════════════════ */
+.cookie-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cookie-modal-visible {
+    opacity: 1;
+}
+
+.cookie-modal {
+    background: var(--surface-dark);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.cookie-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cookie-modal-title {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--primary);
+}
+
+.cookie-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.25s;
+}
+
+.cookie-modal-close:hover {
+    color: var(--text-primary);
+}
+
+.cookie-modal-body {
+    padding: 8px 0;
+}
+
+.cookie-category {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cookie-category:last-child {
+    border-bottom: none;
+}
+
+.cookie-category-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.cookie-category-name {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.cookie-category-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+.cookie-toggle-wrap {
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+.cookie-always-on {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 4px 10px;
+    opacity: 0.7;
+}
+
+/* ─── Toggle Switch ───────────────────────────────── */
+.cookie-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.cookie-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.cookie-toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.cookie-toggle-slider::before {
+    content: '';
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.cookie-toggle input:checked+.cookie-toggle-slider {
+    background: rgba(209, 255, 25, 0.15);
+    border-color: var(--primary);
+}
+
+.cookie-toggle input:checked+.cookie-toggle-slider::before {
+    transform: translateX(20px);
+    background: var(--primary);
+}
+
+/* ─── Modal Footer ────────────────────────────────── */
+.cookie-modal-footer {
+    display: flex;
+    gap: 10px;
+    padding: 20px 28px;
+    border-top: 1px solid var(--border-color);
+}
+
+.cookie-modal-footer .cookie-btn {
+    flex: 1;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .cookie-modal-footer {
+        flex-direction: column;
+    }
+
+    .cookie-modal {
+        max-height: 90vh;
     }
 }
